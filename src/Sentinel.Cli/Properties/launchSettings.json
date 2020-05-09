@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Sentinel.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "\"https://localhost:44300/\""
+    }
+  }
+}
