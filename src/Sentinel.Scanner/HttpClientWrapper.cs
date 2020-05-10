@@ -6,14 +6,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Sentinel.Scanner
 {
-    public class HttpClientWrapper : IRequester
+    public class HttpClientWrapper : IHttpClientWrapper
     {
         private readonly ILogger _logger;
         private readonly HttpClient _client;
 
-        public HttpClientWrapper(ILoggerFactory logger, HttpClient client = null)
+        public HttpClientWrapper(ILoggerFactory loggerFactory, HttpClient client)
         {
-            _logger = logger.CreateLogger(nameof(HttpClientWrapper));
+            _logger = loggerFactory.CreateLogger(nameof(HttpClientWrapper));
             _client = client;
         }
 

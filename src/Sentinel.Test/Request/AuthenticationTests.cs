@@ -12,19 +12,17 @@ using Sentinel.Domain.Models.Authentication;
 
 namespace Sentinel.Test
 {
-    public class RequestAuthenticationTests
+    public class AuthenticationTests
     {
         [Test]
         public void Basic_Auth_Head_Should_Be_Added_To_Request_When_Target_Has_Basic_Auth_Configured()
         {
             var username = "testUser";
             var password = "testPassword";
-            var target = new Target {Authentication = new BasicAuthentication(username, password)};
+            var target = Target.FromUri("https://domain.example.com")
+                .WithAuthentication(new BasicAuthentication(username, password));
 
-            target.Authentication.PreRequestAction();
-
-            var request = new HttpRequestMessage();
-            target.Authentication.AddRequestAuthentication(request);
+            var request = target.ToGetRequestMessage();
 
             var authHeaderPresent =
             request.Headers.TryGetValues(HeaderNames.Authorization, out var authHeader);

@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sentinel.Scanner", "Sentine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.Test", "Sentinel.Test\Sentinel.Test.csproj", "{59A3B3D5-0E7F-418D-A262-6A431E15F164}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.Cli", "Sentinel.Cli\Sentinel.Cli.csproj", "{C5F04B75-8A7D-4B26-919B-082F710FE059}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sentinel.Cli", "Sentinel.Cli\Sentinel.Cli.csproj", "{C5F04B75-8A7D-4B26-919B-082F710FE059}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.Functions.PassiveScan", "Sentinel.Functions.PassiveScan\Sentinel.Functions.PassiveScan.csproj", "{325C07FF-C9F8-4CDE-89D3-2563A8848180}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.Functions.Test", "Sentinel.Functions.Test\Sentinel.Functions.Test.csproj", "{58BE115A-4E59-42F0-98DB-CD0C082395D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,14 @@ Global
 		{C5F04B75-8A7D-4B26-919B-082F710FE059}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5F04B75-8A7D-4B26-919B-082F710FE059}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5F04B75-8A7D-4B26-919B-082F710FE059}.Release|Any CPU.Build.0 = Release|Any CPU
+		{325C07FF-C9F8-4CDE-89D3-2563A8848180}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325C07FF-C9F8-4CDE-89D3-2563A8848180}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325C07FF-C9F8-4CDE-89D3-2563A8848180}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325C07FF-C9F8-4CDE-89D3-2563A8848180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58BE115A-4E59-42F0-98DB-CD0C082395D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58BE115A-4E59-42F0-98DB-CD0C082395D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58BE115A-4E59-42F0-98DB-CD0C082395D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58BE115A-4E59-42F0-98DB-CD0C082395D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +56,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{59A3B3D5-0E7F-418D-A262-6A431E15F164} = {479CCB3B-07F6-47BF-922B-77B881E62134}
 		{C5F04B75-8A7D-4B26-919B-082F710FE059} = {0D550A00-E703-4722-96A4-F7D57B4BD51F}
+		{325C07FF-C9F8-4CDE-89D3-2563A8848180} = {0D550A00-E703-4722-96A4-F7D57B4BD51F}
+		{58BE115A-4E59-42F0-98DB-CD0C082395D7} = {479CCB3B-07F6-47BF-922B-77B881E62134}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2FB23C99-AE93-43A4-89C2-B8CEAFC77118}

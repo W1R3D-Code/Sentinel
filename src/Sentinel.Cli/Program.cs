@@ -27,17 +27,13 @@ namespace Sentinel.Cli
 
             var scanner = _serviceProvider.GetService<ISentinelScanner>();
 
-            var scanRequest = new ScanRequest
+            var target = new Target
             {
-                Targets = new List<Target>
-                {
-                    new Target
-                    {
-                        Url = args[0],
-                        Rules = new ScanRules {AllowPassive = true},
-                    }
-                }
+                Url = args[0],
+                Rules = new ScanRules {AllowPassive = true},
             };
+
+            var scanRequest = new ScanRequest(target);
 
             _logger.Log(LogLevel.Trace, $"Scanning {args[0]}");
 
@@ -52,8 +48,9 @@ namespace Sentinel.Cli
                     .AddFilter("Sentinel.Cli.Program", LogLevel.Debug)
                     .AddConsole())
                 .AddSingleton<IPassiveScanner, ClickjackingScanner>()
+                .AddSingleton<IHttpClientWrapper>(x => new HttpClientWrapper(x.GetService<ILoggerFactory>(), new HttpClient()))
                 .AddSingleton<ISentinelScanner>(x => new SentinelScanner(x.GetService<ILoggerFactory>(),
-                    x.GetService<IEnumerable<IPassiveScanner>>(), new HttpClient()))
+                    x.GetService<IEnumerable<IPassiveScanner>>(), x.GetService<IHttpClientWrapper>()))
                 .BuildServiceProvider();
 
             _logger = _serviceProvider.GetService<ILoggerFactory>()

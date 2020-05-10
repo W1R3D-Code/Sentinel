@@ -14,33 +14,34 @@ namespace Sentinel.Scanner
     public class SentinelScanner : ISentinelScanner
     {
         private readonly ILogger _logger;
-        private readonly HttpClientWrapper _httpClientWrapper;
+        private readonly IHttpClientWrapper _httpClientWrapper;
         private readonly IEnumerable<IPassiveScanner> _passiveScanners;
 
-        public SentinelScanner(ILoggerFactory logger, IEnumerable<IPassiveScanner> passiveScanners, HttpClient httpClient)
+        public SentinelScanner(ILoggerFactory logger, IEnumerable<IPassiveScanner> passiveScanners, IHttpClientWrapper httpClientWrapper)
         {
             _logger = logger.CreateLogger(nameof(SentinelScanner));
             _passiveScanners = passiveScanners;
-            _httpClientWrapper = new HttpClientWrapper(logger, httpClient);
+            _httpClientWrapper = httpClientWrapper;
         }
 
         public async Task<ScanResults> RunAsync(ScanRequest request, CancellationToken cancellationToken)
         {
             // TODO:: Inject HttpClient or Requester singleton
-            var results = new ScanResults(request.HostName);
+            var results = new ScanResults(request.Host);
 
             // TODO:: Option to run in parallel
             foreach (var target in request.Targets)
             {
                 var rules = target.Rules;
-                var requestTarget = target.ToGetRequestMessage(request.HostName);
+                var requestTarget = target.ToGetRequestMessage(request.Host);
 
                 if (rules.AllowPassive)
                 {
                     var response = await _httpClientWrapper.TrySendRequest(requestTarget, cancellationToken);
 
                     // TODO:: Run in parallel
-                    results.Results.AddRange(from scanner in _passiveScanners where scanner.IsEnabled() select scanner.Run(response));
+                    if (response != null)
+                        results.Results.AddRange(from scanner in _passiveScanners where scanner.IsEnabled() select scanner.Run(response));
                 }
             }
 

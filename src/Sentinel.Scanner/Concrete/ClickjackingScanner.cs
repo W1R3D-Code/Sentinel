@@ -25,6 +25,9 @@ namespace Sentinel.Scanner
 
         public override ScanResult Run(HttpResponseMessage response)
         {
+            if (response == null)
+                throw new ArgumentNullException(nameof(response));
+
             var result = new ScanResult(MetaData);
 
             var vulnerableCspDirectiveSources = new List<string>()

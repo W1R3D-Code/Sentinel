@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Sentinel.Scanner
 {
-    public interface IRequester
+    public interface IHttpClientWrapper
     {
         Task<HttpResponseMessage> TrySendRequest(HttpRequestMessage message, CancellationToken cancellationToken, bool disposeClient = false);
     }
