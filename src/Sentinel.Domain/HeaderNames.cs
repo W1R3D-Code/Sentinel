@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Sentinel.Domain
+﻿namespace Sentinel.Domain
 {
     public static class HeaderNames
     {

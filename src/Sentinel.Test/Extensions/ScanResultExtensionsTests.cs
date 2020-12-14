@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
 using Sentinel.Domain.Models;
@@ -17,29 +16,27 @@ namespace Sentinel.Test.ExtensionTests
         [SetUp]
         public void SetUp()
         {
-            _scanResults = new ScanResults(string.Empty)
-            {
-                Results = new List<ScanResult>
-                {
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Critical)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.High)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.High)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Medium)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Medium)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Medium)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Low)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Low)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Low)),
-                    new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Low)),
-                }
-            };
+            var results = new ConcurrentDictionary<string, ScanResult>();
+            results.TryAdd("Test1", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Critical)));
+            results.TryAdd("Test2", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.High)));
+            results.TryAdd("Test3", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.High)));
+            results.TryAdd("Test4", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Medium)));
+            results.TryAdd("Test5", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Medium)));
+            results.TryAdd("Test6", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Medium)));
+            results.TryAdd("Test7", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Low)));
+            results.TryAdd("Test8", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Low)));
+            results.TryAdd("Test9", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Low)));
+            results.TryAdd("Test10", new ScanResult(new ScanMetaData(string.Empty, string.Empty, Severity.Low)));
+
+            _scanResults = new ScanResults(string.Empty) {Results = results};
         }
 
         [Test]
         public void Summary_Counts_All_Severities_In_Result_Set()
         {
             // Given
-            _scanResults.Results.ForEach(x => x.AddFailure(string.Empty));
+            _scanResults.Results.Select(x => x.Value)
+                .ToList().ForEach(x => x.AddFailure(string.Empty));
 
             // Act ScanResults.Summary
             var summary = _scanResults.Summary;

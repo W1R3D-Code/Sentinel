@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using Sentinel.Domain.Models;
 using Sentinel.Domain.Models.Scan;

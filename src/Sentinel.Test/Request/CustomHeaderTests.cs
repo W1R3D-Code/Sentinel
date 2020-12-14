@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
-using Sentinel.Domain;
-using Sentinel.Domain.Extensions;
 using Sentinel.Domain.Models.Scan;
-using Sentinel.Domain.Models.Authentication;
 
-namespace Sentinel.Test
+namespace Sentinel.Test.Request
 {
-    public class CustomHeaderTests
+    public class CustomHeaderTests : TestBase
     {
         [Test]
         public void When_Custom_Headers_Are_Specified_They_Are_Added_To_Request()
@@ -26,7 +20,7 @@ namespace Sentinel.Test
             var target = Target.FromUri("https://domain.example.com")
                 .WithCustomHeaders(customHeaders);
 
-            var request = target.ToGetRequestMessage();
+            var request = RequestHelper.ToGetRequestMessageAsync(target).Result;
 
             var headers = request.Headers.ToDictionary(x => x.Key, x => x.Value.FirstOrDefault());
 

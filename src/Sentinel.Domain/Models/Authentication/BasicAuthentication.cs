@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Sentinel.Domain.Models.Authentication
 {
@@ -17,9 +18,9 @@ namespace Sentinel.Domain.Models.Authentication
             _password = password;
         }
 
-        public void PreRequestAction() { }
+        public async Task PreRequestAction(IHttpClientWrapper client) => await Task.CompletedTask;
 
-        public void AddRequestAuthentication(HttpRequestMessage request)
+        public void AddRequestCookies(HttpRequestMessage request)
         {
             request.Headers.Add(HeaderName, HeaderValue);
         }

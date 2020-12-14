@@ -1,13 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using NUnit.Framework;
-using Sentinel.Domain.Extensions;
 using Sentinel.Domain.Models.Scan;
+using Sentinel.Scanner.Helpers;
 
-namespace Sentinel.Test.ExtensionTests
+namespace Sentinel.Test.Helpers
 {
-    public class TargetExtensionTests
+    public class RequestHelperTests : TestBase
     {
         [Test]
         public void Request_Has_Correct_Uri_When_Target_Uri_Is_Fully_Qualified()
@@ -16,7 +18,7 @@ namespace Sentinel.Test.ExtensionTests
             var target = Target.FromUri("https://domain.example.com");
 
             // Act
-            var request = target.ToGetRequestMessage();
+            var request = RequestHelper.ToGetRequestMessageAsync(target).Result;
 
             // Then
             request.RequestUri.ToString().TrimEnd('/')
@@ -30,7 +32,7 @@ namespace Sentinel.Test.ExtensionTests
             var target = Target.FromUri("http://domain.example.com");
 
             // Act
-            var request = target.ToGetRequestMessage();
+            var request = RequestHelper.ToGetRequestMessageAsync(target).Result;
 
             // Then
             request.RequestUri.ToString().TrimEnd('/')
@@ -48,7 +50,7 @@ namespace Sentinel.Test.ExtensionTests
             var target = Target.FromUri("/Test/Endpoint");
 
             // Act
-            var request = target.ToGetRequestMessage(scanRequest.Host);
+            var request = RequestHelper.ToGetRequestMessageAsync(target, scanRequest.Host).Result;
 
             // Then
             request.RequestUri.ToString().TrimEnd('/')
@@ -63,7 +65,7 @@ namespace Sentinel.Test.ExtensionTests
             var scanRequest = new ScanRequest(target, "domain.example.com");
 
             // Act
-            var request = target.ToGetRequestMessage(scanRequest.Host);
+            var request = RequestHelper.ToGetRequestMessageAsync(target, scanRequest.Host).Result;
 
             // Then
             request.RequestUri.ToString().TrimEnd('/')
@@ -78,7 +80,7 @@ namespace Sentinel.Test.ExtensionTests
             var scanRequest = new ScanRequest(target, "domain.example.com");
 
             // Act
-            var request = target.ToGetRequestMessage(scanRequest.Host);
+            var request = RequestHelper.ToGetRequestMessageAsync(target, scanRequest.Host).Result;
 
             // Then
             request.RequestUri.ToString().TrimEnd('/')
@@ -92,10 +94,11 @@ namespace Sentinel.Test.ExtensionTests
             var target = Target.FromUri("/Test/Endpoint", false);
 
             // Act
-            Action act = () => target.ToGetRequestMessage(null);
+            Action act = () => RequestHelper.ToGetRequestMessage(target, null);
 
             // Then
-            act.Should().ThrowExactly<ArgumentNullException>()
+            act.Should().ThrowExactly<AggregateException>()
+                .WithInnerException<ArgumentNullException>()
                 .And.ParamName.Should().Be("host");
         }
     }

@@ -10,7 +10,7 @@ using Sentinel.Scanner;
 namespace Sentinel.Test
 {
     [TestFixture]
-    public class ClickJackingTests
+    public class CookieTests
     {
         private ILoggerFactory _loggerFactory; 
 

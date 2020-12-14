@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Sentinel.Domain.Models;
+﻿using Sentinel.Domain.Models;
 
 namespace Sentinel.Domain.Extensions
 {

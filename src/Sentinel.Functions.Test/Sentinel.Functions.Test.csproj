@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sentinel.Domain\Sentinel.Domain.csproj" />
-    <ProjectReference Include="..\Sentinel.Functions.PassiveScan\Sentinel.Functions.PassiveScan.csproj" />
+    <ProjectReference Include="..\Sentinel.Functions.PassiveScan\Sentinel.Functions.Scanner.csproj" />
   </ItemGroup>
 
 </Project>

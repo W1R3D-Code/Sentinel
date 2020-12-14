@@ -1,14 +1,26 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
-using Sentinel.Domain.Models;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Sentinel.Domain;
 using Sentinel.Domain.Models.Scan;
 
-namespace Sentinel.Domain.Extensions
+namespace Sentinel.Scanner.Helpers
 {
-    public static class TargetExtensions
+    public class RequestHelper
     {
-        public static HttpRequestMessage ToGetRequestMessage(this Target target, string host = null)
+        private readonly IHttpClientWrapper _httpClientWrapper;
+        private readonly ILoggerFactory _logger;
+
+        public RequestHelper(IHttpClientWrapper httpClientWrapper, ILoggerFactory logger)
+        {
+            _httpClientWrapper = httpClientWrapper;
+            _logger = logger;
+        }
+
+        public HttpRequestMessage ToGetRequestMessage(Target target, string host = null) => ToGetRequestMessageAsync(target, host).Result;
+
+        public async Task<HttpRequestMessage> ToGetRequestMessageAsync(Target target, string host = null)
         {
             if (target.UriIsRelative && string.IsNullOrWhiteSpace(host))
                 throw new ArgumentNullException(nameof(host));
@@ -37,8 +49,8 @@ namespace Sentinel.Domain.Extensions
 
             if (target.Authentication != null)
             {
-                target.Authentication.PreRequestAction();
-                target.Authentication.AddRequestAuthentication(request);
+                await target.Authentication.PreRequestAction(_httpClientWrapper);
+                target.Authentication.AddRequestCookies(request);
             }
 
             return request;

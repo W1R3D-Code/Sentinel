@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Sentinel.Domain;
 using Sentinel.Domain.Models.Scan;
 
-namespace Sentinel.Functions.Test
+namespace Sentinel.Test
 {
     public class MockHttpClientWrapper : IHttpClientWrapper
     {

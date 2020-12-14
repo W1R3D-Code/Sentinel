@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
-using Sentinel.Domain.Extensions;
-using Sentinel.Domain.Models;
+using Sentinel.Domain;
 using Sentinel.Domain.Models.Scan;
 using Sentinel.Scanner;
+using Sentinel.Scanner.Helpers;
 
 namespace Sentinel.Cli
 {
@@ -30,7 +28,7 @@ namespace Sentinel.Cli
             var target = new Target
             {
                 Url = args[0],
-                Rules = new ScanRules {AllowPassive = true},
+                Rules = new ScanRules { AllowPassive = true },
             };
 
             var scanRequest = new ScanRequest(target);
@@ -48,9 +46,12 @@ namespace Sentinel.Cli
                     .AddFilter("Sentinel.Cli.Program", LogLevel.Debug)
                     .AddConsole())
                 .AddSingleton<IPassiveScanner, ClickjackingScanner>()
-                .AddSingleton<IHttpClientWrapper>(x => new HttpClientWrapper(x.GetService<ILoggerFactory>(), new HttpClient()))
+                .AddSingleton<IHttpClientWrapper>(x => new HttpClientWrapper(x.GetService<ILoggerFactory>()))
+                .AddSingleton(
+                    x => new RequestHelper(x.GetService<IHttpClientWrapper>(), x.GetService<ILoggerFactory>()))
                 .AddSingleton<ISentinelScanner>(x => new SentinelScanner(x.GetService<ILoggerFactory>(),
-                    x.GetService<IEnumerable<IPassiveScanner>>(), x.GetService<IHttpClientWrapper>()))
+                    x.GetService<IEnumerable<IPassiveScanner>>(), x.GetService<IHttpClientWrapper>(),
+                    x.GetService<RequestHelper>()))
                 .BuildServiceProvider();
 
             _logger = _serviceProvider.GetService<ILoggerFactory>()
@@ -64,7 +65,9 @@ namespace Sentinel.Cli
             foreach (var (severity, count) in summary)
                 Console.WriteLine($"{severity}: {count}");
 
-            foreach (var r in scanResults.Results.OrderByDescending(x => (int) x.Severity))
+            foreach (var r in scanResults.Results
+                .Select(x => x.Value)
+                .OrderByDescending(x => (int) x.Severity))
             {
                 Console.WriteLine();
                 Console.WriteLine();
@@ -72,6 +75,7 @@ namespace Sentinel.Cli
                 Console.WriteLine($"Details: {r.Scan.Details}");
                 Console.WriteLine($"Result: {(r.Passed ? "Passed" : $"Failed ({r.Severity})")}");
                 Console.WriteLine();
+                
                 foreach (var f in r.Failures)
                 {
                     Console.WriteLine(

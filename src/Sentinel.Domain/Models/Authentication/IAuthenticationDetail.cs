@@ -1,12 +1,11 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Sentinel.Domain.Models.Authentication
 {
     public interface IAuthenticationDetail
     {
-        void PreRequestAction();
-        void AddRequestAuthentication(HttpRequestMessage request);
+        Task PreRequestAction(IHttpClientWrapper client);
+        void AddRequestCookies(HttpRequestMessage request);
     }
 }

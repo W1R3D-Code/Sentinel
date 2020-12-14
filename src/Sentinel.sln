@@ -15,9 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.Test", "Sentinel.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sentinel.Cli", "Sentinel.Cli\Sentinel.Cli.csproj", "{C5F04B75-8A7D-4B26-919B-082F710FE059}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.Functions.PassiveScan", "Sentinel.Functions.PassiveScan\Sentinel.Functions.PassiveScan.csproj", "{325C07FF-C9F8-4CDE-89D3-2563A8848180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sentinel.Functions.Scanner", "Sentinel.Functions.PassiveScan\Sentinel.Functions.Scanner.csproj", "{325C07FF-C9F8-4CDE-89D3-2563A8848180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentinel.Functions.Test", "Sentinel.Functions.Test\Sentinel.Functions.Test.csproj", "{58BE115A-4E59-42F0-98DB-CD0C082395D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sentinel.Functions.Test", "Sentinel.Functions.Test\Sentinel.Functions.Test.csproj", "{58BE115A-4E59-42F0-98DB-CD0C082395D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
